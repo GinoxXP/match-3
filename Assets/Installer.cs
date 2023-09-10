@@ -5,5 +5,6 @@ public class Installer : MonoInstaller
     public override void InstallBindings()
     {
         Container.Bind<PlayingField>().FromComponentInHierarchy().AsSingle();
+        Container.Bind<SwapChips>().FromComponentInHierarchy().AsSingle();
     }
 }

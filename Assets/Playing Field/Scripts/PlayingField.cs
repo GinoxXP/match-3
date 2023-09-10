@@ -1,7 +1,10 @@
 using UnityEngine;
+using Zenject;
 
 public class PlayingField : MonoBehaviour
 {
+    private DiContainer container;
+
     [SerializeField]
     private int width;
     [SerializeField]
@@ -22,17 +25,25 @@ public class PlayingField : MonoBehaviour
 
     public int? Seed { get; set; }
 
-    public bool Swap(Vector2 chip1, Vector2 chip2)
+    public bool Swap(Chip chip1, Chip chip2)
     {
         if (!IsNeighbour(chip1, chip2))
             return false;
 
-        return false;
+        Field[chip1.PositionOnField.x, chip1.PositionOnField.y] = chip2;
+        Field[chip2.PositionOnField.x, chip2.PositionOnField.y] = chip1;
+
+        var bufferChip1Position = chip1.PositionOnField;
+
+        chip1.PositionOnField = chip2.PositionOnField;
+        chip2.PositionOnField = bufferChip1Position;
+
+        return true;
     }
 
-    private bool IsNeighbour(Vector2 chip1, Vector2 chip2)
+    public bool IsNeighbour(Chip chip1, Chip chip2)
     {
-        var distance = Vector2.Distance(chip1, chip2);
+        var distance = Vector2.Distance(chip1.PositionOnField, chip2.PositionOnField);
         return distance == 1;
     }
 
@@ -42,7 +53,7 @@ public class PlayingField : MonoBehaviour
         {
             for (int h = 0; h < height; h++)
             {
-                var chipObject = Instantiate(GetRandomChip(), grid);
+                var chipObject = container.InstantiatePrefab(GetRandomChip(), grid);
 
                 chipObject.transform.position = new Vector2(w + w * gap.x, h + h * gap.y) + startPoint;
 
@@ -67,5 +78,11 @@ public class PlayingField : MonoBehaviour
         Field = new Chip[width, height];
 
         Fill();
+    }
+
+    [Inject]
+    private void Init(DiContainer container)
+    {
+        this.container = container;
     }
 }

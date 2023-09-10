@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 4846843589110154778}
   - component: {fileID: 1374153891480469820}
   - component: {fileID: 5793077534233416659}
-  m_Layer: 0
+  - component: {fileID: 3068187380436206102}
+  m_Layer: 3
   m_Name: Playing Field
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -112,6 +113,18 @@ MonoBehaviour:
   - {fileID: 777949637097133625, guid: 11f04ad0ed55d024f98a93798de4e7f2, type: 3}
   - {fileID: 5470085592783084725, guid: 22834f9f84e5a4649b80e22253320354, type: 3}
   - {fileID: 2057627397678612710, guid: 4256983d715d0c14c8fde289cbe6b795, type: 3}
+--- !u!114 &3068187380436206102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1018635952722264683}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42bdb4705e9d8124cb2c5dadf073516e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1443139753963462568
 GameObject:
   m_ObjectHideFlags: 0
@@ -121,7 +134,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3858024403197583464}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -153,8 +166,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7284277736367500011}
   - component: {fileID: 8013578420164827168}
-  - component: {fileID: 6578989298518754712}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -170,7 +182,7 @@ Transform:
   m_GameObject: {fileID: 3149634442463327447}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -207,7 +219,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 0
   far clip plane: 1000
   field of view: 60
   orthographic: 1
@@ -227,11 +239,3 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &6578989298518754712
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3149634442463327447}
-  m_Enabled: 1

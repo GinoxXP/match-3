@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6429557035862388320}
   - component: {fileID: 5047232522030792677}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 2606579803694188002}
   - component: {fileID: 2245356981575451413}
   - component: {fileID: -8642265794842534625}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Chip Template
   m_TagString: Untagged
   m_Icon: {fileID: 0}
