@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
@@ -9,6 +10,8 @@ public class Chip : MonoBehaviour
     protected int id;
 
     protected SwapChips swapChips;
+    protected PlayingField playingField;
+    protected Score score;
 
     public Vector2Int PositionOnField { get; set; }
 
@@ -43,9 +46,30 @@ public class Chip : MonoBehaviour
 
     public virtual bool IsConfirm() { return true; }
 
+    public void Destroy()
+    {
+        playingField.Field[PositionOnField.x, PositionOnField.y] = null;
+        Destroy(gameObject);
+    }
+
+    protected void DestroyChips(List<Chip> chips)
+    {
+        for (int i = chips.Count - 1; i >= 0; i--)
+            chips[i].Destroy();
+
+        score.CommitDestroyedChipsCount(chips.Count + 1);
+
+        Destroy();
+    }
+
     [Inject]
-    private void Init(SwapChips swapChips)
+    private void Init(
+        SwapChips swapChips,
+        PlayingField playingField,
+        Score score)
     {
         this.swapChips = swapChips;
+        this.playingField = playingField;
+        this.score = score;
     }
 }

@@ -6,5 +6,6 @@ public class Installer : MonoInstaller
     {
         Container.Bind<PlayingField>().FromComponentInHierarchy().AsSingle();
         Container.Bind<SwapChips>().FromComponentInHierarchy().AsSingle();
+        Container.Bind<Score>().FromComponentInHierarchy().AsSingle();
     }
 }
