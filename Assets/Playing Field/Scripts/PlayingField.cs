@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
@@ -45,6 +46,45 @@ public class PlayingField : MonoBehaviour
     {
         var distance = Vector2.Distance(chip1.PositionOnField, chip2.PositionOnField);
         return distance == 1;
+    }
+
+    public void UpdateField()
+    {
+        for (int x = 0; x < width; x++)
+        {
+            var moveY = 0;
+            var nullDetected = false;
+
+            for (int y = 0; y < height; y++)
+            {
+
+                if (Field[x, y] == null)
+                {
+                    nullDetected = true;
+                    moveY++;
+                }
+                else if (nullDetected)
+                {
+                    MoveColumnChips(x, moveY, y);
+                    nullDetected = false;
+                    break;
+                }
+            }
+        }
+    }
+
+    private void MoveColumnChips(int column, int moveLenght, int rowTarget)
+    {
+        var chips = new List<Chip>();
+
+        for (int y = rowTarget; y < height; y++)
+            chips.Add(Field[column, y]);
+
+        foreach(var chip in chips)
+        {
+            chip.PositionOnField = new Vector2Int(chip.PositionOnField.x, chip.PositionOnField.y - moveLenght);
+            chip.Move(new Vector2(chip.PositionOnField.x + chip.PositionOnField.x * gap.x, chip.PositionOnField.y + chip.PositionOnField.y * gap.y) + startPoint);
+        }
     }
 
     private void Fill()

@@ -2,6 +2,7 @@ using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
+using Zenject.Asteroids;
 
 public class Chip : MonoBehaviour
 {
@@ -52,12 +53,24 @@ public class Chip : MonoBehaviour
         Destroy(gameObject);
     }
 
+    public void Move(Vector2 position)
+    {
+        transform.DOMove(position, animationTime);
+    }
+
     protected void DestroyChips(List<Chip> chips)
     {
         for (int i = chips.Count - 1; i >= 0; i--)
-            chips[i].Destroy();
+        {
+            var chip = chips[i];
+            playingField.Field[chip.PositionOnField.x, chip.PositionOnField.y] = null;
+            chip.Destroy();
+        }
 
         score.CommitDestroyedChipsCount(chips.Count + 1);
+
+        playingField.Field[PositionOnField.x, PositionOnField.y] = null;
+        playingField.UpdateField();
 
         Destroy();
     }
