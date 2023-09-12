@@ -77,6 +77,10 @@ public class PlayingField : MonoBehaviour
                 Field[column, y + 1] = buffer;
 
                 var chip = Field[column, y];
+
+                if (chip == null)
+                    break;
+
                 chip.PositionOnField = new Vector2Int(column, y);
                 chip.Move(new Vector2(chip.PositionOnField.x + chip.PositionOnField.x * gap.x, chip.PositionOnField.y + chip.PositionOnField.y * gap.y) + startPoint);
 
