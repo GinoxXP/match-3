@@ -72,7 +72,7 @@ public class Chip : MonoBehaviour
         playingField.Field[PositionOnField.x, PositionOnField.y] = null;
         playingField.UpdateField();
 
-        Destroy();
+        Destroy(gameObject);
     }
 
     [Inject]

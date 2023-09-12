@@ -51,57 +51,62 @@ public class PlayingField : MonoBehaviour
     public void UpdateField()
     {
         for (int x = 0; x < width; x++)
-        {
-            var moveY = 0;
-            var nullDetected = false;
+            MoveColumn(x);
 
+        for (int x = 0; x < width; x++)
+        {
             for (int y = 0; y < height; y++)
             {
-
                 if (Field[x, y] == null)
                 {
-                    nullDetected = true;
-                    moveY++;
-                }
-                else if (nullDetected)
-                {
-                    MoveColumnChips(x, moveY, y);
-                    nullDetected = false;
-                    break;
+                    InsertChip(GetRandomChip(), x, y);
                 }
             }
         }
     }
 
-    private void MoveColumnChips(int column, int moveLenght, int rowTarget)
+    private void MoveColumn(int column)
     {
-        var chips = new List<Chip>();
-
-        for (int y = rowTarget; y < height; y++)
-            chips.Add(Field[column, y]);
-
-        foreach(var chip in chips)
+        var y = height - 1;
+        while (y >= 0)
         {
-            chip.PositionOnField = new Vector2Int(chip.PositionOnField.x, chip.PositionOnField.y - moveLenght);
-            chip.Move(new Vector2(chip.PositionOnField.x + chip.PositionOnField.x * gap.x, chip.PositionOnField.y + chip.PositionOnField.y * gap.y) + startPoint);
+            if (Field[column, y] == null)
+            {
+                var buffer = Field[column, y];
+                Field[column, y] = Field[column, y + 1];
+                Field[column, y + 1] = buffer;
+
+                var chip = Field[column, y];
+                chip.PositionOnField = new Vector2Int(column, y);
+                chip.Move(new Vector2(chip.PositionOnField.x + chip.PositionOnField.x * gap.x, chip.PositionOnField.y + chip.PositionOnField.y * gap.y) + startPoint);
+
+                y = height - 1;
+            }
+
+            y--;
         }
     }
 
     private void Fill()
     {
-        for (int w = 0; w < width; w++)
+        for (int x = 0; x < width; x++)
         {
-            for (int h = 0; h < height; h++)
+            for (int y = 0; y < height; y++)
             {
-                var chipObject = container.InstantiatePrefab(GetRandomChip(), grid);
-
-                chipObject.transform.position = new Vector2(w + w * gap.x, h + h * gap.y) + startPoint;
-
-                var chip = chipObject.GetComponent<Chip>();
-                chip.PositionOnField = new Vector2Int(w, h);
-                Field[w, h] = chip;
+                InsertChip(GetRandomChip(), x, y);
             }
         }
+    }
+
+    private void InsertChip(GameObject randomChip, int x, int y)
+    {
+        var chipObject = container.InstantiatePrefab(randomChip, grid);
+
+        chipObject.transform.position = new Vector2(x + x * gap.x, y + y * gap.y) + startPoint;
+
+        var chip = chipObject.GetComponent<Chip>();
+        chip.PositionOnField = new Vector2Int(x, y);
+        Field[x, y] = chip;
     }
 
     private GameObject GetRandomChip()
