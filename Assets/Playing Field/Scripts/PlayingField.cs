@@ -72,6 +72,9 @@ public class PlayingField : MonoBehaviour
         {
             if (Field[column, y] == null)
             {
+                if (y + 1 >= height)
+                    break;
+
                 var buffer = Field[column, y];
                 Field[column, y] = Field[column, y + 1];
                 Field[column, y + 1] = buffer;
