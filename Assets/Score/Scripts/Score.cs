@@ -3,7 +3,29 @@ using UnityEngine;
 
 public class Score : MonoBehaviour
 {
-    public int ScorePoints { private set; get; } = 0;
+    private static readonly string keyBestScore = "BEST_SCORE";
+
+    private int scorePoints;
+
+    public int ScorePoints
+    {
+        private set
+        {
+            scorePoints = value;
+
+            if (scorePoints > BestScore)
+                BestScore = scorePoints;
+        }
+
+        get => scorePoints;
+    }
+
+    public int BestScore
+    {
+        private set => PlayerPrefs.SetInt(keyBestScore, value);
+
+        get => PlayerPrefs.GetInt(keyBestScore);
+    }
 
     public event Action ScorePointsChanged;
 
