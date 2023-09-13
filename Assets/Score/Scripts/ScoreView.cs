@@ -21,6 +21,11 @@ public class ScoreView : MonoBehaviour
         OnScorePointsChanged();
     }
 
+    private void OnDestroy()
+    {
+        score.ScorePointsChanged -= OnScorePointsChanged;
+    }
+
     [Inject]
     private void Init(Score score)
     {
