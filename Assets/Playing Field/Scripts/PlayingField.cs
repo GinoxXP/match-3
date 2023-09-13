@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
@@ -51,17 +50,33 @@ public class PlayingField : MonoBehaviour
     public void UpdateField()
     {
         for (int x = 0; x < width; x++)
-            MoveColumn(x);
-
-        for (int x = 0; x < width; x++)
         {
-            for (int y = 0; y < height; y++)
-            {
-                if (Field[x, y] == null)
-                {
-                    InsertChip(GetRandomChip(), x, y);
-                }
-            }
+            MoveColumn(x);
+            FillEmptyColumns(x);
+        }
+    }
+
+    private void FillEmptyColumns(int column)
+    {
+        var nullChips = 0;
+        for(int y = 0; y < height; y++)
+        {
+            if (Field[column, y] == null)
+                nullChips++;
+        }
+
+        int i = 0;
+        for (int y = height - nullChips; y < height; y++)
+        {
+            var newY = height + i;
+
+            var insertedChip = InsertChip(GetRandomChip(), column, y);
+            insertedChip.transform.position = new Vector2(column + column * gap.x, newY + newY * gap.y) + startPoint;
+
+            var chip = insertedChip.GetComponent<Chip>();
+            chip.Move(new Vector2(chip.PositionOnField.x + chip.PositionOnField.x * gap.x, chip.PositionOnField.y + chip.PositionOnField.y * gap.y) + startPoint);
+
+            i++;
         }
     }
 
@@ -104,7 +119,7 @@ public class PlayingField : MonoBehaviour
         }
     }
 
-    private void InsertChip(GameObject randomChip, int x, int y)
+    private GameObject InsertChip(GameObject randomChip, int x, int y)
     {
         var chipObject = container.InstantiatePrefab(randomChip, grid);
 
@@ -113,6 +128,8 @@ public class PlayingField : MonoBehaviour
         var chip = chipObject.GetComponent<Chip>();
         chip.PositionOnField = new Vector2Int(x, y);
         Field[x, y] = chip;
+
+        return chipObject;
     }
 
     private GameObject GetRandomChip()
