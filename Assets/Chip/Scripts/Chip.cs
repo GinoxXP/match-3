@@ -2,11 +2,10 @@ using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
-using Zenject.Asteroids;
 
 public class Chip : MonoBehaviour
 {
-    private static readonly float animationTime = 0.2f;
+    public static readonly float AnimationTime = 0.2f;
     [SerializeField]
     protected int id;
 
@@ -30,18 +29,18 @@ public class Chip : MonoBehaviour
 
     public void Select()
     {
-        transform.DOScale(1.2f, animationTime);
+        transform.DOScale(1.2f, AnimationTime);
     }
 
     public void Deselect()
     {
-        transform.DOScale(1f, animationTime);
+        transform.DOScale(1f, AnimationTime);
     }
 
     public void Cancel()
     {
         transform
-            .DOShakeScale(animationTime)
+            .DOShakeScale(AnimationTime)
             .OnKill(() => Deselect());
     }
 
@@ -55,7 +54,7 @@ public class Chip : MonoBehaviour
 
     public void Move(Vector2 position)
     {
-        transform.DOMove(position, animationTime);
+        transform.DOMove(position, AnimationTime);
     }
 
     protected void DestroyChips(List<Chip> chips)

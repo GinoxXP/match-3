@@ -52,6 +52,9 @@ public class SimpleChip : Chip
             
             var chip = playingField.Field[newPosition.x, newPosition.y];
 
+            if (chip == null)
+                break;
+
             if (chip.ID == id)
             {
                 chips.Add(chip);

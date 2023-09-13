@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using Zenject;
 
@@ -20,6 +21,8 @@ public class PlayingField : MonoBehaviour
     [Space]
     [SerializeField]
     private GameObject[] chipsPrefab;
+
+    private IEnumerator updateFieldCoroutine;
 
     public Chip[,] Field { get; private set; }
 
@@ -49,11 +52,58 @@ public class PlayingField : MonoBehaviour
 
     public void UpdateField()
     {
+        if (updateFieldCoroutine != null)
+            return;
+
+        updateFieldCoroutine = UpdateFieldCoroutine();
+        StartCoroutine(updateFieldCoroutine);
+    }
+
+    private void UpdateColumns()
+    {
         for (int x = 0; x < width; x++)
         {
             MoveColumn(x);
             FillEmptyColumns(x);
         }
+    }
+
+    private void ConfirmField()
+    {
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                var chip = Field[x, y];
+
+                if (chip == null)
+                {
+                    updateFieldCoroutine = null;
+                    UpdateField();
+                    return;
+                }
+
+                var result = chip.IsConfirm();
+
+                if (result)
+                {
+                    updateFieldCoroutine = null;
+                    UpdateField();
+                    return;
+                }
+            }
+        }
+    }
+
+    private IEnumerator UpdateFieldCoroutine()
+    {
+        UpdateColumns();
+
+        yield return new WaitForSeconds(Chip.AnimationTime);
+
+        ConfirmField();
+
+        updateFieldCoroutine = null;
     }
 
     private void FillEmptyColumns(int column)
@@ -62,21 +112,17 @@ public class PlayingField : MonoBehaviour
         for(int y = 0; y < height; y++)
         {
             if (Field[column, y] == null)
+            {
+                var newY = height + nullChips;
+
+                var insertedChip = InsertChip(GetRandomChip(), column, y);
+                insertedChip.transform.position = new Vector2(column + column * gap.x, newY + newY * gap.y) + startPoint;
+
+                var chip = insertedChip.GetComponent<Chip>();
+                chip.Move(new Vector2(chip.PositionOnField.x + chip.PositionOnField.x * gap.x, chip.PositionOnField.y + chip.PositionOnField.y * gap.y) + startPoint);
+
                 nullChips++;
-        }
-
-        int i = 0;
-        for (int y = height - nullChips; y < height; y++)
-        {
-            var newY = height + i;
-
-            var insertedChip = InsertChip(GetRandomChip(), column, y);
-            insertedChip.transform.position = new Vector2(column + column * gap.x, newY + newY * gap.y) + startPoint;
-
-            var chip = insertedChip.GetComponent<Chip>();
-            chip.Move(new Vector2(chip.PositionOnField.x + chip.PositionOnField.x * gap.x, chip.PositionOnField.y + chip.PositionOnField.y * gap.y) + startPoint);
-
-            i++;
+            }
         }
     }
 
@@ -146,6 +192,7 @@ public class PlayingField : MonoBehaviour
         Field = new Chip[width, height];
 
         Fill();
+        UpdateField();
     }
 
     [Inject]
