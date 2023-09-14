@@ -19,6 +19,26 @@ public class Timer : MonoBehaviour
 
     public event Action TimeIsOver;
 
+    public event Action TimeAdded;
+
+    public void AddTime(float time)
+    {
+        TimeLeft += time;
+
+        StartTimer();
+        TimeAdded?.Invoke();
+        TimeChanged?.Invoke();
+    }
+
+    private void StartTimer()
+    {
+        if (timerCoroutine != null)
+            return;
+
+        timerCoroutine = TimerCoroutine();
+        StartCoroutine(timerCoroutine);
+    }
+
     private IEnumerator TimerCoroutine()
     {
         while (TimeLeft >= 0)
@@ -30,13 +50,14 @@ public class Timer : MonoBehaviour
         }
 
         TimeIsOver?.Invoke();
+
+        timerCoroutine = null;
     }
 
     private void Start()
     {
         TimeLeft = maxTime;
 
-        timerCoroutine = TimerCoroutine();
-        StartCoroutine(timerCoroutine);
+        StartTimer();
     }
 }

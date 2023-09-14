@@ -29,6 +29,11 @@ public class GameOverView : MonoBehaviour
         bestScore.text = score.BestScore.ToString();
     }
 
+    private void OnTimeAdded()
+    {
+        panel.SetActive(false);
+    }
+
     private void OnDestroy()
     {
         timer.TimeIsOver -= OnTimeIsOver;
@@ -38,6 +43,7 @@ public class GameOverView : MonoBehaviour
     {
         panel.SetActive(false);
         timer.TimeIsOver += OnTimeIsOver;
+        timer.TimeAdded += OnTimeAdded;
     }
 
     [Inject]
