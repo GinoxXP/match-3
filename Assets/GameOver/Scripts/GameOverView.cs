@@ -1,8 +1,10 @@
 using TMPro;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Zenject;
 
+[RequireComponent(typeof(CanvasGroup))]
 public class GameOverView : MonoBehaviour
 {
     [SerializeField]
@@ -14,6 +16,7 @@ public class GameOverView : MonoBehaviour
 
     private Timer timer;
     private Score score;
+    private CanvasGroup canvasGroup;
 
     public void Restart()
     {
@@ -23,6 +26,9 @@ public class GameOverView : MonoBehaviour
 
     private void OnTimeIsOver()
     {
+        canvasGroup.alpha = 0;
+        canvasGroup.DOFade(1, 0.2f);
+
         panel.SetActive(true);
 
         currentScore.text = score.ScorePoints.ToString();
@@ -41,6 +47,8 @@ public class GameOverView : MonoBehaviour
 
     private void Start()
     {
+        canvasGroup = GetComponent<CanvasGroup>();
+
         panel.SetActive(false);
         timer.TimeIsOver += OnTimeIsOver;
         timer.TimeAdded += OnTimeAdded;

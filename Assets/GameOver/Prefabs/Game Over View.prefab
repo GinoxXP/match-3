@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3708070836690312671}
   - component: {fileID: 4550000564819975998}
   - component: {fileID: 4591022116524336070}
+  - component: {fileID: 2209405987104906430}
   m_Layer: 5
   m_Name: Game Over View
   m_TagString: Untagged
@@ -61,6 +62,18 @@ MonoBehaviour:
   panel: {fileID: 8220010895120431880}
   currentScore: {fileID: 9069365105294962755}
   bestScore: {fileID: 3786120710066442434}
+--- !u!225 &2209405987104906430
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 465263916551164146}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &5597659511497513389
 GameObject:
   m_ObjectHideFlags: 0
