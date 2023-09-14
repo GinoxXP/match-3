@@ -9,5 +9,7 @@ public class Installer : MonoInstaller
         Container.Bind<Score>().FromComponentInHierarchy().AsSingle();
         Container.Bind<Timer>().FromComponentInHierarchy().AsSingle();
         Container.Bind<AdsService>().FromComponentInHierarchy().AsSingle();
+
+        Container.Bind<ISaveLoadService>().To<LocalSaveLoadService>().AsSingle();
     }
 }

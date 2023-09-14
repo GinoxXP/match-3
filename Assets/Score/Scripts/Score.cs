@@ -1,11 +1,12 @@
 using System;
 using UnityEngine;
+using Zenject;
 
 public class Score : MonoBehaviour
 {
-    private static readonly string keyBestScore = "BEST_SCORE";
-
     private int scorePoints;
+
+    private ISaveLoadService saveLoadService;
 
     public int ScorePoints
     {
@@ -22,9 +23,9 @@ public class Score : MonoBehaviour
 
     public int BestScore
     {
-        private set => PlayerPrefs.SetInt(keyBestScore, value);
+        private set => saveLoadService.SaveBestScore(value);
 
-        get => PlayerPrefs.GetInt(keyBestScore);
+        get => saveLoadService.LoadBestScore();
     }
 
     public event Action ScorePointsChanged;
@@ -37,5 +38,11 @@ public class Score : MonoBehaviour
             ScorePoints += count * count - 2;
 
         ScorePointsChanged?.Invoke();
+    }
+
+    [Inject]
+    private void Init(ISaveLoadService saveLoadService)
+    {
+        this.saveLoadService = saveLoadService;
     }
 }
